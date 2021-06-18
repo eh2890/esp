@@ -237,8 +237,9 @@ class EspCreator(Frame):
     #self.generate_socmap()
     #self.generate_mmi64_regs()
     #self.generate_power()
-    if os.path.isfile(".esp_config.bak") == True:
-      shutil.move(".esp_config.bak", ".esp_config")
+    #if os.path.isfile(".esp_config.bak") == True:
+    #  shutil.move(".esp_config.bak", ".esp_config")
+    return #new
 
   def generate_socmap(self):
     try:
@@ -246,7 +247,7 @@ class EspCreator(Frame):
     except:
       return
     self.soc.noc.vf_points = int(self.bottom_frame_noccfg.vf_points_entry.get())
-    self.soc.write_config()
+    #self.soc.write_config()
     esp_config = soc_config(soc)
     create_socmap(esp_config, soc)
  
@@ -281,7 +282,7 @@ def on_closing():
     return
   soc.noc.vf_points = int(app.bottom_frame_noccfg.vf_points_entry.get())
   if messagebox.askokcancel("Quit", "Do you want to quit?"):
-    soc.write_config()
+    #soc.write_config()
     root.destroy()
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
