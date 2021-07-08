@@ -1,5 +1,7 @@
 #include "espcreator.h"
 #include "ui_espcreator.h"
+#include "constants.h"
+#include <QDebug>
 
 //
 // Constructor
@@ -22,8 +24,19 @@ espcreator::espcreator(QWidget *parent,
     ui->lineEdit_board->setText(TOSTRING(BOARD));
     // TODO: is there a way to look up for processors
     // instead of hard-coding these strings here?
+    /*
     ui->combo_arch->addItem("leon3");
     ui->combo_arch->addItem("ariane");
+    ui->combo_arch->addItem("ibex"); // added 06/30
+    */
+
+    // added 06/30
+    for (unsigned i = 0; i < combo_arch_to_nocw.size(); i++)
+    {
+        ui->combo_arch->addItem(get_nocw(i, 0).c_str());
+    }
+    // end added 06/30
+
     ui->combo_arch->setEditable(true);
     ui->combo_arch->lineEdit()->setReadOnly(true);
     ui->combo_arch->lineEdit()->setAlignment(Qt::AlignCenter);
@@ -35,12 +48,20 @@ espcreator::espcreator(QWidget *parent,
     ui->lineEdit_espmac->setText(get_ESP_MAC().c_str());
     ui->lineEdit_espip->setText(get_ESP_IP().c_str());
 
+    /*
     ui->combo_l2_ways->addItem("2 ways");
     ui->combo_l2_ways->addItem("4 ways");
     ui->combo_l2_ways->addItem("8 ways");
     ui->combo_l2_ways->setCurrentIndex(1);
+    */
+    for (unsigned i = 0; i < l2_ways.size(); i++)
+    {
+        ui->combo_l2_ways->addItem(l2_ways[i].c_str());
+    }
+    ui->combo_l2_ways->setCurrentIndex(l2_ways_i);
     ui->combo_l2_ways->setEnabled(false);
 
+    /*
     ui->combo_l2_sets->addItem("32 sets");
     ui->combo_l2_sets->addItem("64 sets");
     ui->combo_l2_sets->addItem("128 sets");
@@ -50,14 +71,28 @@ espcreator::espcreator(QWidget *parent,
     ui->combo_l2_sets->addItem("2048 sets");
     ui->combo_l2_sets->addItem("4096 sets");
     ui->combo_l2_sets->setCurrentIndex(4);
+    */
+    for (unsigned i = 0; i < l2_sets.size(); i++)
+    {
+        ui->combo_l2_sets->addItem(l2_sets[i].c_str());
+    }
+    ui->combo_l2_sets->setCurrentIndex(l2_sets_i);
     ui->combo_l2_sets->setEnabled(false);
 
+    /*
     ui->combo_llc_ways->addItem("4 ways");
     ui->combo_llc_ways->addItem("8 ways");
     ui->combo_llc_ways->addItem("16 ways");
     ui->combo_llc_ways->setCurrentIndex(2);
+    */
+    for (unsigned i = 0; i < llc_ways.size(); i++)
+    {
+        ui->combo_llc_ways->addItem(llc_ways[i].c_str());
+    }
+    ui->combo_llc_ways->setCurrentIndex(llc_ways_i);
     ui->combo_llc_ways->setEnabled(false);
 
+    /*
     ui->combo_llc_sets->addItem("32 sets");
     ui->combo_llc_sets->addItem("64 sets");
     ui->combo_llc_sets->addItem("128 sets");
@@ -67,14 +102,28 @@ espcreator::espcreator(QWidget *parent,
     ui->combo_llc_sets->addItem("2048 sets");
     ui->combo_llc_sets->addItem("4096 sets");
     ui->combo_llc_sets->setCurrentIndex(5);
+    */
+    for (unsigned i = 0; i < llc_sets.size(); i++)
+    {
+        ui->combo_llc_sets->addItem(llc_sets[i].c_str());
+    }
+    ui->combo_llc_sets->setCurrentIndex(llc_sets_i);
     ui->combo_llc_sets->setEnabled(false);
 
+    /*
     ui->combo_al2_ways->addItem("2 ways");
     ui->combo_al2_ways->addItem("4 ways");
     ui->combo_al2_ways->addItem("8 ways");
     ui->combo_al2_ways->setCurrentIndex(1);
+    */
+    for (unsigned i = 0; i < al2_ways.size(); i++)
+    {
+        ui->combo_al2_ways->addItem(al2_ways[i].c_str());
+    }
+    ui->combo_al2_ways->setCurrentIndex(al2_ways_i);
     ui->combo_al2_ways->setEnabled(false);
 
+    /*
     ui->combo_al2_sets->addItem("32 sets");
     ui->combo_al2_sets->addItem("64 sets");
     ui->combo_al2_sets->addItem("128 sets");
@@ -84,10 +133,22 @@ espcreator::espcreator(QWidget *parent,
     ui->combo_al2_sets->addItem("2048 sets");
     ui->combo_al2_sets->addItem("4096 sets");
     ui->combo_al2_sets->setCurrentIndex(4);
+    */
+    for (unsigned i = 0; i < al2_sets.size(); i++)
+    {
+        ui->combo_al2_sets->addItem(al2_sets[i].c_str());
+    }
+    ui->combo_al2_sets->setCurrentIndex(al2_sets_i);
     ui->combo_al2_sets->setEnabled(false);
 
+    /*
     ui->combo_implem->addItem("SystemVerilog");
     ui->combo_implem->addItem("SystemC (HLS)");
+    */
+    for (unsigned i = 0; i < implem.size(); i++)
+    {
+        ui->combo_implem->addItem(implem[i].c_str());
+    }
     ui->combo_implem->setEnabled(false);
 
     ui->pushButton_gen->setEnabled(true);
@@ -195,6 +256,13 @@ std::string espcreator::get_MAC_Addr(std::string mac)
     std::transform(mac.begin(), mac.end(), mac.begin(), ::toupper);
     return mac;
 }
+
+// added 06/30
+std::string espcreator::get_nocw(int i, int j)
+{
+    return combo_arch_to_nocw[i][j];
+}
+// end added 06/30
 
 //
 // NoC Frame
@@ -450,7 +518,7 @@ QString espcreator::get_err_bullet()
     err_bullet.append("<span style=\" color:#000000;\" > ");
     return err_bullet;
 }
-
+/*
 void espcreator::on_combo_arch_currentIndexChanged(const QString &arg1)
 {
     if (arg1.toStdString() == "leon3")
@@ -462,6 +530,21 @@ void espcreator::on_combo_arch_currentIndexChanged(const QString &arg1)
         ui->lineEdit_nocw->setText("64");
     }
 }
+*/
+
+// added 06/30
+void espcreator::on_combo_arch_currentIndexChanged(const QString &arg1)
+{
+    for (unsigned i = 0; i < combo_arch_to_nocw.size(); i++)
+    {
+        if (arg1.toStdString() == combo_arch_to_nocw[i][0])
+        {
+            ui->lineEdit_nocw->setText(get_nocw(i, 1).c_str());
+        }
+    }
+    // ui->lineEdit_nocw->setText(ui->lineEdit_mac->text()); for testing lineEdit_nocw
+}
+// end added 06/30
 
 void espcreator::addressMapChanged()
 {

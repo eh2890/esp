@@ -92,6 +92,7 @@ slots:
     std::string get_ESP_MAC();
     std::string get_ESP_IP();
     std::string get_MAC_Addr(std::string mac);
+    std::string get_nocw(int i, int j);
 
     QString get_ok_bullet();
     QString get_err_bullet();
