@@ -41,6 +41,7 @@ const std::vector<std::string> l2_sets = {
     "1024 sets",
     "2048 sets",
     "4096 sets",
+    "8192 sets",
     "testing"
 };
 
@@ -69,6 +70,7 @@ const std::vector<std::string> llc_sets = {
     "1024 sets",
     "2048 sets",
     "4096 sets",
+    "8192 sets",
     "testing"
 };
 
@@ -97,6 +99,7 @@ const std::vector<std::string> al2_sets = {
     "1024 sets",
     "2048 sets",
     "4096 sets",
+    "8192 sets",
     "testing"
 };
 
@@ -106,9 +109,14 @@ const unsigned al2_sets_i = 4;
 /* ----- implem ----- */
 // implem
 const std::vector<std::string> implem = {
-    "SystemVerilog",
-    "SystemC (HLS)",
+    "ESP RTL",
+    "SPANDEX HLS",
+    "ESP HLS",
     "testing"
 };
+/*
+    "SystemVerilog",
+    "SystemC (HLS)",
+*/
 
 #endif // CONSTANTS_H

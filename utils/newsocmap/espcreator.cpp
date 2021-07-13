@@ -149,6 +149,7 @@ espcreator::espcreator(QWidget *parent,
     {
         ui->combo_implem->addItem(implem[i].c_str());
     }
+    ui->combo_implem->setCurrentIndex(0);
     ui->combo_implem->setEnabled(false);
 
     ui->pushButton_gen->setEnabled(true);
