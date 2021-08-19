@@ -33,6 +33,12 @@ public:
    ~Tile();
 
    void set_id(unsigned id);
+   std::string get_type();
+   std::string get_ip();
+   std::string get_domain();
+   std::string get_PLL();
+   std::string get_buf();
+   std::string get_impl();
 
 private slots:
     void on_type_sel_currentIndexChanged(const QString &arg1);
@@ -41,6 +47,8 @@ private slots:
     void on_domain_sel_valueChanged(int arg1);
     void on_has_pll_sel_toggled(bool arg1);
     void on_extra_buf_sel_toggled(bool arg1);
+    void on_has_cache_sel_toggled(bool arg1);
+    void on_has_ddr_sel_toggled(bool arg1);
 
 private:
     QGridLayout *layout;
@@ -54,6 +62,8 @@ private:
     QSpinBox *domain_sel;
     QCheckBox *has_pll_sel;
     QCheckBox *extra_buf_sel;
+    QCheckBox *has_cache_sel;
+    QCheckBox *has_ddr_sel;
     QLabel *acc_caches;
     QCheckBox *has_caches;
 
@@ -78,6 +88,8 @@ public:
     unsigned domain;
     bool has_pll;
     bool extra_buf;
+    bool has_cache;
+    bool has_ddr;
 
 };
 

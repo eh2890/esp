@@ -55,6 +55,7 @@ static const QColor color_axi("#bebada");
 static const QColor color_cpu("#fb8072");
 static const QColor color_mem("#80b1d3");
 static const QColor color_misc("#fdb462");
+static const QColor color_slm("#d8a4ec");
 
 typedef enum tile_enum
 {
@@ -64,6 +65,7 @@ typedef enum tile_enum
     TILE_MEM,
     TILE_MEMDBG,
     TILE_MISC,
+    TILE_SLM,
     TILE_AXI
 } tile_t;
 std::string tile_t_to_string(tile_t type);
