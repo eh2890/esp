@@ -106,9 +106,9 @@
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>0</y>
+                 <y>-194</y>
                  <width>392</width>
-                 <height>663</height>
+                 <height>751</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout">
@@ -127,6 +127,9 @@
                    <enum>QFrame::Raised</enum>
                   </property>
                   <layout class="QGridLayout" name="gridLayout_2">
+                   <item row="18" column="1">
+                    <widget class="QComboBox" name="combo_slm"/>
+                   </item>
                    <item row="13" column="0">
                     <widget class="QLabel" name="label_mac">
                      <property name="sizePolicy">
@@ -433,6 +436,9 @@
                      </property>
                     </widget>
                    </item>
+                   <item row="6" column="1">
+                    <widget class="QComboBox" name="combo_arch"/>
+                   </item>
                    <item row="4" column="1">
                     <widget class="QLineEdit" name="lineEdit_board">
                      <property name="enabled">
@@ -511,35 +517,6 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="6" column="1">
-                    <widget class="QComboBox" name="combo_arch"/>
-                   </item>
-                   <item row="4" column="0">
-                    <widget class="QLabel" name="label_board">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="text">
-                      <string>FPGA Board</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="8" column="0">
-                    <widget class="QLabel" name="label_nocw">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="text">
-                      <string>NoC / DMA Width (bits)</string>
-                     </property>
-                    </widget>
-                   </item>
                    <item row="13" column="1">
                     <widget class="QLineEdit" name="lineEdit_mac">
                      <property name="enabled">
@@ -605,6 +582,32 @@
                      </property>
                     </widget>
                    </item>
+                   <item row="4" column="0">
+                    <widget class="QLabel" name="label_board">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="text">
+                      <string>FPGA Board</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="8" column="0">
+                    <widget class="QLabel" name="label_nocw">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="text">
+                      <string>NoC / DMA Width (bits)</string>
+                     </property>
+                    </widget>
+                   </item>
                    <item row="0" column="0" colspan="2">
                     <widget class="QLabel" name="label_3">
                      <property name="sizePolicy">
@@ -632,6 +635,23 @@
                       <set>Qt::AlignCenter</set>
                      </property>
                     </widget>
+                   </item>
+                   <item row="18" column="0">
+                    <widget class="QLabel" name="label_13">
+                     <property name="text">
+                      <string>SLM KB per Tile</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="19" column="0">
+                    <widget class="QLabel" name="label_14">
+                     <property name="text">
+                      <string>Data Transfers</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="19" column="1">
+                    <widget class="QComboBox" name="combo_data"/>
                    </item>
                   </layout>
                  </widget>
@@ -710,14 +730,14 @@
                    <item row="7" column="2">
                     <widget class="QComboBox" name="combo_al2_ways"/>
                    </item>
-                   <item row="8" column="2">
-                    <widget class="QComboBox" name="combo_al2_sets"/>
+                   <item row="2" column="2">
+                    <widget class="QComboBox" name="combo_implem"/>
                    </item>
                    <item row="8" column="0">
                     <widget class="QComboBox" name="combo_l2_sets"/>
                    </item>
-                   <item row="2" column="2">
-                    <widget class="QComboBox" name="combo_implem"/>
+                   <item row="8" column="2">
+                    <widget class="QComboBox" name="combo_al2_sets"/>
                    </item>
                    <item row="8" column="1">
                     <widget class="QComboBox" name="combo_llc_sets"/>
@@ -891,6 +911,9 @@
                    <item row="1" column="2">
                     <widget class="QSpinBox" name="spinBox_nocx"/>
                    </item>
+                   <item row="1" column="1">
+                    <widget class="QSpinBox" name="spinBox_nocy"/>
+                   </item>
                    <item row="2" column="1" colspan="2">
                     <widget class="QPushButton" name="pushButton_noc">
                      <property name="enabled">
@@ -900,9 +923,6 @@
                       <string>Update NoC</string>
                      </property>
                     </widget>
-                   </item>
-                   <item row="1" column="1">
-                    <widget class="QSpinBox" name="spinBox_nocy"/>
                    </item>
                    <item row="0" column="1" colspan="2">
                     <widget class="QLabel" name="label_mesh">
@@ -967,11 +987,21 @@
                     </widget>
                    </item>
                    <item row="11" column="2">
-                    <widget class="QCheckBox" name="checkBox_proble_llc">
+                    <widget class="QCheckBox" name="checkBox_probe_llc">
                      <property name="text">
                       <string> LLC Cache Miss/Hit</string>
                      </property>
                     </widget>
+                   </item>
+                   <item row="12" column="1">
+                    <widget class="QLabel" name="label_15">
+                     <property name="text">
+                      <string>VF Points</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="12" column="2">
+                    <widget class="QSpinBox" name="spinBox_vf"/>
                    </item>
                   </layout>
                  </widget>
@@ -1217,7 +1247,7 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>68</width>
+                 <width>98</width>
                  <height>38</height>
                 </rect>
                </property>
@@ -1289,7 +1319,7 @@
              <widget class="QWidget" name="scrollAreaWidgetContents_3">
               <property name="geometry">
                <rect>
-                <x>-68</x>
+                <x>0</x>
                 <y>0</y>
                 <width>993</width>
                 <height>618</height>

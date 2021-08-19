@@ -34,6 +34,9 @@ std::string tile_t_to_string(tile_t type)
     case TILE_MISC:
         return "Miscellaneous";
         break;
+    case TILE_SLM:
+        return "SLM";
+        break;
     default:
         // This should never occur...
         break;

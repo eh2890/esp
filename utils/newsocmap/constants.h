@@ -119,4 +119,70 @@ const std::vector<std::string> implem = {
     "SystemC (HLS)",
 */
 
+/* ----- RTL ----- */
+// implem_to_RTL
+const std::vector<std::vector<std::string>> implem_to_RTL = {
+    {"ESP RTL", "y"},
+    {"SPANDEX HLS", "n"},
+    {"ESP HLS", "n"}
+};
+
+/* ----- combo_slm ----- */
+const std::vector<std::string> combo_slm = {
+    "64",
+    "128",
+    "256",
+    "512",
+    "1024",
+    "2048",
+    "4096"
+};
+
+// combo_slm_i
+const unsigned combo_slm_i = 2;
+
+/* ----- combo_data ----- */
+const std::vector<std::string> combo_data = {
+    "Bigphysical area",
+    "Scatter/Gather"
+};
+
+// combo_data_i
+const unsigned combo_data_i = 0;
+
+// tile_type
+const std::vector<std::vector<std::string>> tile_type = {
+    {"Accelerator", "acc"},
+    {"Processor", "cpu"},
+    {"Memory", "mem"},
+    {"Miscellaneous", "misc"},
+    {"SLM", "slm"},
+    {"Empty", "empty"}
+};
+
+// NAPBS
+const int NAPBS = 128;
+
+// NCPU_MAX
+const int NCPU_MAX = 4;
+
+// NMEM_MAX
+const int NMEM_MAX = 4;
+
+// NSLM_MAX
+const int NSLM_MAX = 16;
+
+// NTILE_MAX
+const int NTILE_MAX = 64;
+
+// NFULL_COHERENT_MAX
+const int NFULL_COHERENT_MAX = 16;
+
+// NLLC_COHERENT_MAX
+const int NLLC_COHERENT_MAX = 64;
+
+// NACC_MAX
+const int NACC_MAX = NAPBS - 2 * NCPU_MAX - NMEM_MAX - NTILE_MAX - 8;
+
+
 #endif // CONSTANTS_H

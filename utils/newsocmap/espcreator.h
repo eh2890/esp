@@ -16,6 +16,7 @@
 
 #include <QMainWindow>
 #include <QFrame>
+#include <QMessageBox>
 
 #include <tile.h>
 #include <address_map.h>
