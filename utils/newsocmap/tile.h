@@ -3,6 +3,8 @@
 
 #include <string>
 #include <stdio.h>
+#include <iomanip>
+#include <sstream>
 
 #include <QFrame>
 #include <QLabel>
@@ -13,7 +15,11 @@
 #include <QComboBox>
 #include <QSpinBox>
 #include <QCheckBox>
-
+#include <QDialog>
+#include <QLineEdit>
+#include <QDoubleSpinBox>
+#include <QVector>
+#include <QCloseEvent>
 #include "socmap_utils.h"
 
 using namespace socmap;
@@ -33,12 +39,15 @@ public:
    ~Tile();
 
    void set_id(unsigned id);
+   void set_vf_points_count(int vf);
    std::string get_type();
    std::string get_ip();
    std::string get_domain();
    std::string get_PLL();
    std::string get_buf();
    std::string get_impl();
+   std::string get_power();
+   std::string get_acc_l2();
 
 private slots:
     void on_type_sel_currentIndexChanged(const QString &arg1);
@@ -49,6 +58,7 @@ private slots:
     void on_extra_buf_sel_toggled(bool arg1);
     void on_has_cache_sel_toggled(bool arg1);
     void on_has_ddr_sel_toggled(bool arg1);
+    void on_power_popup();
 
 private:
     QGridLayout *layout;
@@ -66,6 +76,8 @@ private:
     QCheckBox *has_ddr_sel;
     QLabel *acc_caches;
     QCheckBox *has_caches;
+    QPushButton *power_popup;
+    bool popup_active;
 
     std::vector<std::string> ip_list;
     std::vector<std::string> impl_list;
@@ -90,7 +102,8 @@ public:
     bool extra_buf;
     bool has_cache;
     bool has_ddr;
-
+    int vf_points_count;
+    std::vector<double> vf_points;
 };
 
 #endif // TILE_H

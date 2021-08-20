@@ -11,8 +11,7 @@
 const std::vector<std::vector<std::string>> combo_arch_to_nocw = {
     {"leon3",  "32"},
     {"ariane", "64"},
-    {"ibex",   "32"},
-    {"tester", "128"}
+    {"ibex",   "32"}
 };
 
 
@@ -24,8 +23,7 @@ const std::vector<std::vector<std::string>> combo_arch_to_nocw = {
 const std::vector<std::string> l2_ways = {
     "2 ways",
     "4 ways",
-    "8 ways",
-    "testing"
+    "8 ways"
 };
 
 // l2_ways_i
@@ -41,8 +39,7 @@ const std::vector<std::string> l2_sets = {
     "1024 sets",
     "2048 sets",
     "4096 sets",
-    "8192 sets",
-    "testing"
+    "8192 sets"
 };
 
 // l2_sets_i
@@ -53,8 +50,7 @@ const unsigned l2_sets_i = 4;
 const std::vector<std::string> llc_ways = {
     "4 ways",
     "8 ways",
-    "16 ways",
-    "testing"
+    "16 ways"
 };
 
 // llc_ways_i
@@ -70,8 +66,7 @@ const std::vector<std::string> llc_sets = {
     "1024 sets",
     "2048 sets",
     "4096 sets",
-    "8192 sets",
-    "testing"
+    "8192 sets"
 };
 
 // llc_sets_i
@@ -82,8 +77,7 @@ const unsigned llc_sets_i = 5;
 const std::vector<std::string> al2_ways = {
     "2 ways",
     "4 ways",
-    "8 ways",
-    "testing"
+    "8 ways"
 };
 
 // al2_ways_i
@@ -99,8 +93,7 @@ const std::vector<std::string> al2_sets = {
     "1024 sets",
     "2048 sets",
     "4096 sets",
-    "8192 sets",
-    "testing"
+    "8192 sets"
 };
 
 // al2_sets_i
@@ -111,8 +104,7 @@ const unsigned al2_sets_i = 4;
 const std::vector<std::string> implem = {
     "ESP RTL",
     "SPANDEX HLS",
-    "ESP HLS",
-    "testing"
+    "ESP HLS"
 };
 /*
     "SystemVerilog",

@@ -325,8 +325,13 @@ void espcreator::on_pushButton_noc_clicked()
         }
 
     for (int y = 0; y < (int)frame_tile.size(); y++)
+    {
         for (int x = 0; x < (int)frame_tile[y].size(); x++)
+        {
             frame_tile[y][x]->set_id(y * new_nocx + x);
+            frame_tile[y][x]->set_vf_points_count(ui->spinBox_vf->value());
+        }
+    }
 
     /* ui->pushButton_cfg->setEnabled(true); */
 
@@ -350,6 +355,13 @@ void espcreator::on_spinBox_nocy_valueChanged(int arg1 __attribute__((unused)))
 void espcreator::on_spinBox_nocx_valueChanged(int arg1 __attribute__((unused)))
 {
     check_enable_noc_update();
+}
+
+void espcreator::on_spinBox_vf_valueChanged(int arg1 __attribute__((unused)))
+{
+    for (unsigned int y = 0; y < NOCY; y++)
+        for (unsigned int x = 0; x < NOCX; x++)
+            frame_tile[y][x]->set_vf_points_count(ui->spinBox_vf->value());
 }
 
 //
@@ -758,7 +770,7 @@ void espcreator::on_pushButton_gen_clicked()
     }
 
     // 620 tot_cpu > 1 and cache_en
-    if (tot_cpu > 1 and cache_en)
+    if (tot_cpu > 1 and !cache_en)
     {
         gen_ok = false;
         errors_s += "Caches are required for multicore SoCs\n";
@@ -871,12 +883,12 @@ void espcreator::on_pushButton_gen_clicked()
 
     // 660 clk_region_skip > 0 TODO: fix
 
-
-
-
-
-    QString errors_q = QString::fromUtf8(errors_s.c_str());
-    QMessageBox::critical(this, "Errors", errors_q);
+    if (errors_s.length() > 0)
+    {
+        QString errors_q = QString::fromUtf8(errors_s.c_str());
+        QMessageBox::critical(this, "Errors", errors_q);
+        return;
+    }
 
     // MessageBox
     QMessageBox msgBox;
@@ -1025,15 +1037,15 @@ void espcreator::on_pushButton_gen_clicked()
     
     // CONFIG_ROUTERS
     if (ui->checkBox_probe_noc_routers->isChecked())
-        fp << "CONFIG_ROUTERS = y\n";
+        fp << "CONFIG_MON_ROUTERS = y\n";
     else
-        fp << "#CONFIG_ROUTERS is not set\n";
+        fp << "#CONFIG_MON_ROUTERS is not set\n";
     
     // CONFIG_ACCELERATORS
     if (ui->checkBox_probe_acc->isChecked())
-        fp << "CONFIG_ACCELERATORS = y\n";
+        fp << "CONFIG_MON_ACCELERATORS = y\n";
     else
-        fp << "#CONFIG_ACCELERATORS is not set\n";
+        fp << "#CONFIG_MON_ACCELERATORS is not set\n";
 
     // CONFIG_MON_L2
     if (ui->checkBox_probe_l2->isChecked())
@@ -1063,13 +1075,15 @@ void espcreator::on_pushButton_gen_clicked()
             fp << frame_tile[y][x]->get_type() << " ";
             if (frame_tile[y][x]->get_type() == "misc")
                 fp << "IO ";
+            else if (frame_tile[y][x]->get_type() == "acc")
+                fp << frame_tile[y][x]->get_ip() << " ";
             else
                 fp << frame_tile[y][x]->get_ip() << " ";
             fp << frame_tile[y][x]->get_domain() << " ";
             fp << frame_tile[y][x]->get_PLL() << " ";
             fp << frame_tile[y][x]->get_buf();
             if (frame_tile[y][x]->get_type() == "acc")
-                fp << " " << frame_tile[y][x]->get_impl().c_str() << " ";
+                fp << " " << frame_tile[y][x]->get_impl().c_str() << " " << frame_tile[y][x]->get_acc_l2() << " sld";
             fp << "\n";
         }
     }
@@ -1100,7 +1114,10 @@ void espcreator::on_pushButton_gen_clicked()
         for (unsigned int x = 0; x < NOCX; x++)
         {
             fp << "POWER_" << to_string(y) << "_" << to_string(x) << " = ";
-            fp << frame_tile[y][x]->get_ip() << " ";
+            if (frame_tile[y][x]->get_type() == "misc")
+                fp << "IO ";
+            else
+                fp << frame_tile[y][x]->get_ip() << " ";
             if (frame_tile[y][x]->get_type() != "acc")
             {
                 for (int i = 0; i < ui->spinBox_vf->value(); i++)
@@ -1110,10 +1127,7 @@ void espcreator::on_pushButton_gen_clicked()
             }
             else
             {
-                for (int i = 0; i < ui->spinBox_vf->value(); i++)
-                {
-                    fp << "1 0 0 ";
-                }
+                fp << frame_tile[y][x]->get_power();
             }
             fp << "\n";
         }

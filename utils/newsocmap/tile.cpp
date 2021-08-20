@@ -35,6 +35,7 @@ Tile::Tile(QWidget *parent,
     // Set known variables
     nocy = y;
     nocx = x;
+    this->popup_active = false;
 
     // Create object name
     std::string name("tile_" + to_string(y) + "_" + to_string(x));
@@ -47,7 +48,7 @@ Tile::Tile(QWidget *parent,
 
     /* sizePolicy.setHeightForWidth(this->sizePolicy().hasHeightForWidth()); */
     this->setFixedWidth(237);
-    this->setFixedHeight(140);
+    this->setFixedHeight(160);
     this->setSizePolicy(sizePolicy);
 
     // Set appearance
@@ -125,6 +126,13 @@ Tile::Tile(QWidget *parent,
     ip_sel->addItem("");
     ip_sel->setToolTip(ip_sel->currentText());
     ip_sel->setMinimumWidth(90);
+
+
+    // Power Information button
+    power_popup = new QPushButton("Power Information", this);
+    layout->addWidget(power_popup, 5, 0, 1, 5);
+    power_popup->setEnabled(false);
+    connect(power_popup, &QPushButton::released, this, &Tile::on_power_popup);
 
     ////////////////////////////////////////////////////////////////////////
     // TODO: these are hard-coded accelerators. They need to be read
@@ -280,6 +288,15 @@ void Tile::set_id(unsigned id)
     this->id = id;
 }
 
+void Tile::set_vf_points_count(int vf)
+{
+    this->vf_points_count = vf;
+    if ((int)vf_points.size() < 3 * vf)
+    {
+        vf_points.resize(3 * vf, 0);
+    }
+}
+
 std::string Tile::get_type()
 {
     QString get_type_q = type_sel->currentText();
@@ -319,6 +336,24 @@ std::string Tile::get_impl()
     QString get_impl_q = impl_sel->currentText();
     std::string get_impl_s = get_impl_q.toUtf8().constData();
     return get_impl_s;
+}
+
+std::string Tile::get_power()
+{
+    std::string tile_power;
+    for (int i = 0; i < 3 * vf_points_count; i++)
+    {
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(1) << vf_points[i];
+        std::string tmp = stream.str();
+        tile_power += tmp + " ";
+    }
+    return tile_power;
+}
+
+std::string Tile::get_acc_l2()
+{
+    return to_string((int)has_caches->isChecked());
 }
 
 void Tile::impl_reset()
@@ -364,6 +399,7 @@ void Tile::clocking_setEnabled(bool en)
     extra_buf_sel->setEnabled(en);
     has_cache_sel->setEnabled(en);
     has_ddr_sel->setEnabled(en);
+    power_popup->setEnabled(en);
 }
 
 void Tile::domain_setEnabled(bool en)
@@ -537,4 +573,71 @@ void Tile::on_has_cache_sel_toggled(bool arg1)
 void Tile::on_has_ddr_sel_toggled(bool arg1)
 {
     has_ddr = arg1;
+}
+
+void Tile::on_power_popup()
+{
+    if (this->popup_active)
+        return;
+
+    this->popup_active = true;
+    QDialog *popup = new QDialog;
+    std::string popup_title("Power Information: Tile " + to_string(this->id));
+    popup->setWindowTitle(QString::fromUtf8(popup_title.c_str()));
+    QGridLayout *gridLayout = new QGridLayout(popup);
+
+    // Column labels
+    QLabel *i_l = new QLabel(tr("i"));
+    gridLayout->addWidget(i_l, 0, 0);
+    QLabel *voltage_l = new QLabel(tr("Voltage (V)"));
+    gridLayout->addWidget(voltage_l, 0, 1);
+    QLabel *frequency_l = new QLabel(tr("Frequency (MHz)"));
+    gridLayout->addWidget(frequency_l, 0, 2);
+    QLabel *tot_energy_l = new QLabel(tr("Tot Energy (pJ)"));
+    gridLayout->addWidget(tot_energy_l, 0, 3);
+
+    QVector<QDoubleSpinBox*> spin_boxes;
+    int next_row = 0;
+    for (int v = 0; v < this->vf_points_count; v++)
+    {
+        gridLayout->addWidget(new QLabel(tr(to_string(v).c_str())), v + 1, 0);
+
+        spin_boxes.append(new QDoubleSpinBox(popup));
+        spin_boxes[3 * v]->setMinimum(0);
+        spin_boxes[3 * v]->setDecimals(1);
+        spin_boxes[3 * v]->setSingleStep(0.1);
+        spin_boxes[3 * v]->setValue(vf_points[3 * v]);
+        spin_boxes.append(new QDoubleSpinBox(popup));
+        spin_boxes[3 * v + 1]->setMinimum(0);
+        spin_boxes[3 * v + 1]->setDecimals(1);
+        spin_boxes[3 * v + 1]->setSingleStep(0.1);
+        spin_boxes[3 * v + 1]->setValue(vf_points[3 * v + 1]);
+        spin_boxes.append(new QDoubleSpinBox(popup));
+        spin_boxes[3 * v + 2]->setMinimum(0);
+        spin_boxes[3 * v + 2]->setDecimals(1);
+        spin_boxes[3 * v + 2]->setSingleStep(0.1);
+        spin_boxes[3 * v + 2]->setValue(vf_points[3 * v + 2]);
+
+        gridLayout->addWidget(spin_boxes[3 * v], v + 1, 1);
+        gridLayout->addWidget(spin_boxes[3 * v + 1], v + 1, 2);
+        gridLayout->addWidget(spin_boxes[3 * v + 2], v + 1, 3);
+        next_row = v + 1;
+    }
+    QPushButton *save_b = new QPushButton("&Save", popup);
+    gridLayout->addWidget(save_b, next_row + 1, 1);
+    connect(save_b, &QPushButton::released, popup, &QDialog::accept);
+    QPushButton *cancel_b = new QPushButton("&Cancel", popup);
+    gridLayout->addWidget(cancel_b, next_row + 1, 2);
+    connect(cancel_b, &QPushButton::released, popup, &QDialog::reject);
+
+    int ret = popup->exec();
+    this->popup_active = false;
+
+    if (ret == 1) // Save
+    {
+        for (int i = 0; i < 3 * vf_points_count; i++)
+        {
+            vf_points[i] = spin_boxes[i]->value();
+        }
+    }
 }

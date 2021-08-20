@@ -61,6 +61,7 @@ slots:
     void on_pushButton_noc_clicked();
     void on_spinBox_nocy_valueChanged(int arg1);
     void on_spinBox_nocx_valueChanged(int arg1);
+    void on_spinBox_vf_valueChanged(int arg1);
     // void on_pushButton_cfg_clicked();
 
     void on_checkBox_caches_toggled(bool arg1);
