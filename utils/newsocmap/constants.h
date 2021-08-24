@@ -152,6 +152,23 @@ const std::vector<std::vector<std::string>> tile_type = {
     {"Empty", "empty"}
 };
 
+// ip_acc
+const std::vector<std::vector<std::string>> ip_acc = {
+    {"dummy", "DUMMY_STRATUS"},
+    {"adder", "ADDER_VIVADO"}
+};
+
+// impl_acc
+const std::vector<std::vector<std::string>> impl_acc = {
+    {"dummy_basic_dma64", "basic_dma64"},
+    {"adder_dma32_w8", "dma32_w8"},
+    {"adder_dma32_w16", "dma32_w16"},
+    {"adder_dma32_w32", "dma32_w32"},
+    {"adder_dma64_w8", "dma64_w8"},
+    {"adder_dma64_w16", "dma64_w16"},
+    {"adder_dma64_w32", "dma64_w32"},
+};
+
 // NAPBS
 const int NAPBS = 128;
 

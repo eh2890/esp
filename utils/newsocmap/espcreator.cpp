@@ -1076,14 +1076,14 @@ void espcreator::on_pushButton_gen_clicked()
             if (frame_tile[y][x]->get_type() == "misc")
                 fp << "IO ";
             else if (frame_tile[y][x]->get_type() == "acc")
-                fp << frame_tile[y][x]->get_ip() << " ";
+                fp << frame_tile[y][x]->get_ip_acc() << " ";
             else
                 fp << frame_tile[y][x]->get_ip() << " ";
             fp << frame_tile[y][x]->get_domain() << " ";
             fp << frame_tile[y][x]->get_PLL() << " ";
             fp << frame_tile[y][x]->get_buf();
             if (frame_tile[y][x]->get_type() == "acc")
-                fp << " " << frame_tile[y][x]->get_impl().c_str() << " " << frame_tile[y][x]->get_acc_l2() << " sld";
+                fp << " " << frame_tile[y][x]->get_impl_acc().c_str() << " " << frame_tile[y][x]->get_acc_l2() << " sld"; // change get_impl() to some other function
             fp << "\n";
         }
     }

@@ -356,6 +356,29 @@ std::string Tile::get_acc_l2()
     return to_string((int)has_caches->isChecked());
 }
 
+std::string Tile::get_ip_acc()
+{
+    for (unsigned i = 0; i < ip_acc.size(); i++) 
+    {
+        if (ip == ip_acc[i][0])
+            return ip_acc[i][1];
+    }
+    return ip;
+}
+
+std::string Tile::get_impl_acc()
+{
+    QString get_impl_q = impl_sel->currentText();
+    std::string get_impl_s = get_impl_q.toUtf8().constData();
+
+    for (unsigned i = 0; i < impl_acc.size(); i++) 
+    {
+        if (get_impl_s == impl_acc[i][0])
+            return impl_acc[i][1];
+    }
+    return get_impl_s;
+}
+
 void Tile::impl_reset()
 {
     impl_sel->clear();

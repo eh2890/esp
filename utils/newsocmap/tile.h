@@ -48,6 +48,8 @@ public:
    std::string get_impl();
    std::string get_power();
    std::string get_acc_l2();
+   std::string get_ip_acc();
+   std::string get_impl_acc();
 
 private slots:
     void on_type_sel_currentIndexChanged(const QString &arg1);
